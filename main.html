@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alphabot Raffle Entry</title>
+    <style>
+        /* [Your existing styles here] */
+    </style>
+</head>
+<body>
+    <h1>Enter Alphabot Raffle</h1>
+    <form id="raffleForm">
+        <label for="apiKey">API Key:</label>
+        <input type="password" id="apiKey" name="apiKey" required>
+        <label for="raffleId">Raffle ID:</label>
+        <input type="text" id="raffleId" name="raffleId" required>
+        <button type="submit">Enter Raffle</button>
+    </form>
+    <div id="status"></div>
+
+    <script>
+        document.getElementById('raffleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const apiKey = document.getElementById('apiKey').value;
+            const raffleId = document.getElementById('raffleId').value;
+
+            // Replace the URL with the actual Alphabot API endpoint for entering raffles
+            fetch(`https://api.alphabot.app/raffles/${raffleId}/enter`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + apiKey
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    document.getElementById('status').textContent = 'Successfully entered the raffle!';
+                    document.getElementById('status').style.color = 'green';
+                } else {
+                    document.getElementById('status').textContent = 'Failed to enter the raffle: ' + data.message;
+                    document.getElementById('status').style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('status').textContent = 'An error occurred: ' + error.message;
+                document.getElementById('status').style.color = 'red';
+            });
+        });
+    </script>
+</body>
+</html>
